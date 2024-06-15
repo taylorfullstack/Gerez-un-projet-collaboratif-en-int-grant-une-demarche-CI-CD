@@ -76,5 +76,5 @@ jobs:
       - name: Upload Coverage Report to GitHub
         uses: actions/upload-artifact@v4.3.3
         with:
-         name: Frontend Coverage Report
+         name: Frontend Coverage Report Node ${{ matrix.node-version }}
          path: ./front/coverage/bobapp/
