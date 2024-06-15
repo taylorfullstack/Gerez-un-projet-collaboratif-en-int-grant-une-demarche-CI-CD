@@ -43,6 +43,11 @@ jobs:
         with:
           name: JaCoCo Code Coverage Report
           path: ./back/target/site/jacoco/
+      - name: Upload Backend Build Artifacts
+        uses: actions/upload-artifact@v4.3.3
+        with:
+          name: Backend Build Artifacts
+          path: ./back/target/
 
   frontend:
     runs-on: ubuntu-latest
