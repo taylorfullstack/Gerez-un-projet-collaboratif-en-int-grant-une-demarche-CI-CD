@@ -42,4 +42,4 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_PROJECTKEY: taylorfullstack_Gerez-un-projet-collaboratif-en-int-grant-une-demarche-CI-CD
       - name: Analyze Backend Code
-        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=${{ env.SONAR_PROJECTKEY }}
+        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=taylorfullstack_Gerez-un-projet-collaboratif-en-int-grant-une-demarche-CI-CD -Dsonar.organization=taylorfullstack
