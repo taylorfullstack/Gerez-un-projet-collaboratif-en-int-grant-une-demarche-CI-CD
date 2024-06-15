@@ -1,0 +1,36 @@
+name: codequality.yml
+
+on:
+  workflow_run:
+    workflows: ["tests.yml"]
+    types:
+      - completed
+
+jobs:
+  backend-sonarcloud:
+    name: SonarCloud Backend
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ${{ github.workspace }}/back
+    steps:
+      - name: Checkout Backend Code
+        uses: actions/checkout@v4
+      - name: Cache SonarCloud packages
+        uses: actions/cache@v4.0.2
+        with:
+          path: ~/.sonar/cache
+          key: ${{ runner.os }}-sonar
+          restore-keys: ${{ runner.os }}-sonar
+      - name: Download Backend Build Artifacts
+        uses: actions/download-artifact@v4.3.3
+        with:
+          name: Backend Build Artifacts
+          path: ./back/target/
+      - name: Set Up SonarCloud
+        uses: SonarSource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      - name: Analyze Backend Code
+        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=taylorfullstack_Gerez-un-projet-collaboratif-en-int-grant-une-demarche-CI-CD
