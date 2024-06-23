@@ -13,7 +13,6 @@ jobs:
       run:
         working-directory: ${{ github.workspace }}/back
     name: SonarCloud Backend Code Analysis Scan
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     steps:
       - name: Checkout Backend Code
         uses: actions/checkout@v4
@@ -56,7 +55,6 @@ jobs:
         node-version: [ 14.15.0, 16.10.0 ]
     name: SonarCloud Frontend Code Analysis Scan
     runs-on: ubuntu-latest
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     steps:
       - uses: actions/checkout@v4
         with:
