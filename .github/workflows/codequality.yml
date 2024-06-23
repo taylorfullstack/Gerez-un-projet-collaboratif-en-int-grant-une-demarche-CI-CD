@@ -1,11 +1,11 @@
 name: codequality.yml
 
 on:
-  workflow_run:
-    workflows: ["tests.yml"]
-    types:
-      - completed
-    branches: [ main, SonarQube ]
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
 jobs:
   backend-sonarcloud:
     runs-on: ubuntu-latest
