@@ -69,3 +69,5 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         with:
           projectBaseDir: front
+          sonarProjectKey: taylorfullstack_Gerez-un-projet-collaboratif-en-int-grant-une-demarche-CI-CD
+          sonarOrganization: taylorfullstack
