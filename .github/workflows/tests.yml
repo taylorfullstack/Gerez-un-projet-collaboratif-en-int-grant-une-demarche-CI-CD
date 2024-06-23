@@ -2,9 +2,9 @@ name: tests.yml
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main, SonarQube ]
   pull_request:
-    branches: [ main ]
+    branches: [ main, SonarQube ]
 
 jobs:
   backend:

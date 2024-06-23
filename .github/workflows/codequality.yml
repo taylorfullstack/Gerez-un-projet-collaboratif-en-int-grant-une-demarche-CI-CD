@@ -5,7 +5,7 @@ on:
     workflows: ["tests.yml"]
     types:
       - completed
-
+    branches: [ main, SonarQube ]
 jobs:
   backend-sonarcloud:
     runs-on: ubuntu-latest
