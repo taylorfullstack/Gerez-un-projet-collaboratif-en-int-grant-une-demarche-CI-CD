@@ -40,3 +40,34 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+  frontend-sonarcloud:
+    defaults:
+      run:
+        working-directory: ${{ github.workspace }}/front
+    strategy:
+      matrix:
+        node-version: [ 14.15.0, 16.10.0]
+    name: SonarCloud Frontend Code Analysis Scan
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Shallow clones should be disabled for a better relevancy of analysis
+      - name: Set Up Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Install Frontend Dependencies
+        run: npm ci
+      - name: Build Frontend Code and Execute Tests
+        run: |
+          npm run build:prod
+          npm run test:prod
+      - name: Analyze Frontend Code
+        uses: SonarSource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        with:
+          projectBaseDir: front/
