@@ -36,7 +36,7 @@ jobs:
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2
       - name: Build and Analyze Backend Code
-        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=taylorfullstack_Gerez-un-projet-collaboratif-en-int-grant-une-demarche-CI-CD
+        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=taylorfullstack_Gerez-un-projet-collaboratif-en-int-grant-une-demarche-CI-CD -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
@@ -47,7 +47,7 @@ jobs:
         working-directory: ${{ github.workspace }}/front
     strategy:
       matrix:
-        node-version: [ 16.10.0]
+        node-version: [ 14.15.0, 16.10.0 ]
     name: SonarCloud Frontend Code Analysis Scan
     runs-on: ubuntu-latest
     steps:
@@ -72,3 +72,4 @@ jobs:
           args: >
             -Dsonar.projectKey=taylorfullstack_Gerez-un-projet-collaboratif-en-int-grant-une-demarche-CI-CD
             -Dsonar.organization=taylorfullstack
+            -Dsonar.coverage.lcov.reportPaths=coverage/bobapp/lcov.info
