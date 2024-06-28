@@ -46,6 +46,10 @@ jobs:
         with:
           name: backend-coverage-report
           path: back/target/site/jacoco
+      - name: Print SonarCloud Token
+        run: echo $SONAR_TOKEN
+      - name: Ping SonarCloud Server
+        run: ping -c 4 sonarcloud.io
       - name: Build and Analyze Backend Code
         run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=com.openclassrooms.bobapp -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml
         env:
@@ -80,6 +84,10 @@ jobs:
         with:
           name: frontend-coverage-report ${{ matrix.node-version }}
           path: front/coverage/bobapp
+      - name: Print SonarCloud Token
+        run: echo $SONAR_TOKEN
+      - name: Ping SonarCloud Server
+        run: ping -c 4 sonarcloud.io
       - name: Analyze Frontend Code
         uses: SonarSource/sonarcloud-github-action@master
         env:
