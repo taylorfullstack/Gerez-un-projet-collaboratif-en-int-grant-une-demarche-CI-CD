@@ -2,11 +2,20 @@ name: Frontend Test and SonarCloud Scan
 
 on:
   push:
+    paths:
+      - 'front/**'
+      - '.github/workflows/**'
     branches:
       - main
+
   pull_request:
-    branches:
-      - main
+    paths:
+      - 'front/**'
+      - '.github/workflows/**'
+    types:
+      - opened
+      - synchronize
+      - reopened
 
 jobs:
   Frontend-test:
