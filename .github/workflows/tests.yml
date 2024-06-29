@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: /back
+        working-directory: ${{ github.workspace }}/back
     strategy:
       matrix:
         java-version: [ 17 ]
@@ -43,7 +43,7 @@ jobs:
       - name: Print JaCoCo Report
         run: cat ./target/site/jacoco/jacoco.xml
       - name: Analyze with SonarCloud
-        run: mvn -Dsonar.coverage.jacoco.xmlReportPaths=./back/target/site/jacoco-aggregate/jacoco.xml sonar:sonar -Pcoverage
+        run: mvn sonar:sonar -Pcoverage -Dsonar.jacoco.reportPaths=target/site/jacoco/jacoco.xml -X
         env:
          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN_BACKEND }}
