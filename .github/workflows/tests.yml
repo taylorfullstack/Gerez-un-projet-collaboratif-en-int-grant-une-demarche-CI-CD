@@ -40,10 +40,20 @@ jobs:
         run: mvn jacoco:report
       - name: Print JaCoCo Report
         run: cat ./target/site/jacoco/jacoco.xml
+      - name: Upload Compiled Classes
+        uses: actions/upload-artifact@v4.3.3
+        with:
+         name: Compiled Classes
+         path: ./target/classes/
       - name: Checkout code again with full history for SonarCloud analysis
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0
+         fetch-depth: 0
+      - name: Download Compiled Classes
+        uses: actions/download-artifact@v4.3.3
+        with:
+         name: Compiled Classes
+         path: ./target/classes/
       - name: Analyze with SonarCloud
         run: mvn sonar:sonar -Pcoverage
         env:
