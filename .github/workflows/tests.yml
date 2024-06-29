@@ -40,6 +40,10 @@ jobs:
         run: mvn jacoco:report
       - name: Print JaCoCo Report
         run: cat ./target/site/jacoco/jacoco.xml
+      - name: Checkout code again with full history for SonarCloud analysis
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - name: Analyze with SonarCloud
         run: mvn sonar:sonar -Pcoverage
         env:
