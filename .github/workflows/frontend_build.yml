@@ -24,8 +24,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          fetch-depth: 50
-          ref: 'main'
+          fetch-depth: 0
 
       - name: Use Node.js ${{matrix.node-version}}
         uses: actions/setup-node@v1
@@ -51,6 +50,12 @@ jobs:
           args: >
             -Dsonar.projectKey=taylorfullstack_Gerez-un-projet-collaboratif-en-int-grant-une-demarche-CI-CD-frontend
             -Dsonar.organization=taylorfullstack
+            -Dsonar.sources=./src/app
+            -Dsonar.sourceEncoding=UTF-8
+            -Dsonar.test.sources=./src/app
+            -Dsonar.exclusions=node_modules/**,dist/**,.vscode/**,.github/**,src/environments/**,src/tests.ts,**/*.spec.ts
+            -Dsonar.javascript.lcov.reportPaths=./coverage/bobapp/lcov.info
+            -Dsonar.project.monorepo.enabled=true
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN_FRONTEND}}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
