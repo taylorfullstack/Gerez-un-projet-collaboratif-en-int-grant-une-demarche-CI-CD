@@ -14,12 +14,10 @@ jobs:
         working-directory: ./back
     strategy:
       matrix:
-        java-version: [ 17 ]
+        java-version: [ 11 ]
     steps:
       - name: Checkout Backend Code
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
       - name: Set Up JDK ${{ matrix.java-version }}
         uses: actions/setup-java@v4.2.1
         with:
@@ -50,19 +48,29 @@ jobs:
         with:
           name: Backend Build Artifacts
           path: ./back/target/
-      - name: Get latest artifact
-        id: get-artifact
-        run: |
-          ARTIFACT_ID=$(curl --silent -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-          "https://api.github.com/repos/${{ github.repository }}/actions/artifacts" | jq '.artifacts[0].id')
-          echo "ARTIFACT_ID=$ARTIFACT_ID" >> $GITHUB_ENV
-      - name: Create directories for JaCoCo Report
-        run: mkdir -p ./back/target/site/jacoco/
+
+  sonarcloud:
+    needs: backend
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./back
+    steps:
+      - name: Checkout Backend Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Set Up JDK
+        uses: actions/setup-java@v4.2.1
+        with:
+          java-version: 17
+          distribution: "temurin"
+          cache: "maven"
       - name: Download JaCoCo Report from Artifacts
-        run: |
-          curl -L -o jacoco.zip -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-          "https://api.github.com/repos/${{ github.repository }}/actions/artifacts/$ARTIFACT_ID/zip"
-          unzip jacoco.zip -d ./back/target/site/jacoco/
+        uses: actions/download-artifact@v4
+        with:
+          name: JaCoCo Code Coverage Report
+          path: ./back/target/site/jacoco/
       - name: Analyze with SonarCloud
         run: mvn sonar:sonar -Pcoverage -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml
         env:
