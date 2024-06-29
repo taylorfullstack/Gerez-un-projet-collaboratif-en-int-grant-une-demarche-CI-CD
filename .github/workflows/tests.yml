@@ -65,8 +65,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: Backend Build Artifacts
-          path: ./
-          if-no-files-found: error
+          path: ./back/target/
       - name: Build Project
         run: mvn package -DskipTests
       - name: Analyze with SonarCloud
@@ -125,7 +124,7 @@ jobs:
           name: Frontend Coverage Report Node 14.15.0
           path: ./front/coverage/bobapp/
       - name: Analyze with SonarCloud
-        uses: sonarsource/sonarcloud-github-action@v1.6
+        uses: sonarsource/sonarcloud-github-action@v2.3.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN_FRONTEND }}
