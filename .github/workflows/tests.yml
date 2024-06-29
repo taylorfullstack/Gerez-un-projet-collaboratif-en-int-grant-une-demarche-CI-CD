@@ -66,6 +66,7 @@ jobs:
         with:
           name: Backend Build Artifacts
           path: ./
+          if-no-files-found: error
       - name: Build Project
         run: mvn package -DskipTests
       - name: Analyze with SonarCloud
@@ -108,3 +109,31 @@ jobs:
         with:
          name: Frontend Coverage Report Node ${{ matrix.node-version }}
          path: ./front/coverage/bobapp/
+  sonarcloud-frontend:
+    needs: frontend
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Frontend Code
+        uses: actions/checkout@v4
+      - name: Set Up Node.js
+        uses: actions/setup-node@v4.0.2
+        with:
+          node-version: 14
+      - name: Download Frontend Coverage Report
+        uses: actions/download-artifact@v4
+        with:
+          name: Frontend Coverage Report Node 14.15.0
+          path: ./front/coverage/bobapp/
+      - name: Analyze with SonarCloud
+        uses: sonarsource/sonarcloud-github-action@v1.6
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN_FRONTEND }}
+        with:
+          projectBaseDir: front
+          args: >
+            -Dsonar.projectKey=taylorfullstack_Gerez-un-projet-collaboratif-en-int-grant-une-demarche-CI-CD-frontend
+            -Dsonar.organization=taylorfullstack
+            -Dsonar.sources=src
+            -Dsonar.host.url=https://sonarcloud.io
+            -Dsonar.javascript.lcov.reportPaths=coverage/bobapp/lcov.info
