@@ -104,7 +104,7 @@ jobs:
       - name: Execute Frontend Tests and Generate Code Coverage Report
         run: npm run test:prod
       - name: Upload Coverage Report to GitHub
-        uses: actions/upload-artifact@v4.3.3
+        uses: actions/upload-artifact@v4
         with:
          name: Frontend Coverage Report Node ${{ matrix.node-version }}
          path: ./front/coverage/bobapp/
@@ -114,17 +114,19 @@ jobs:
     steps:
       - name: Checkout Frontend Code
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - name: Set Up Node.js
         uses: actions/setup-node@v4.0.2
         with:
-          node-version: 14
+          node-version: 20
       - name: Download Frontend Coverage Report
         uses: actions/download-artifact@v4
         with:
           name: Frontend Coverage Report Node 14.15.0
           path: ./front/coverage/bobapp/
       - name: Analyze with SonarCloud
-        uses: sonarsource/sonarcloud-github-action@v2.3.0
+        uses: sonarsource/sonarcloud-github-action@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN_FRONTEND }}
