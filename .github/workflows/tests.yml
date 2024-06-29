@@ -40,6 +40,8 @@ jobs:
         run: mvn jacoco:report
       - name: Print JaCoCo Report
         run: cat ./target/site/jacoco/jacoco.xml
+      - name: Compile Java Classes
+        run: mvn compile
       - name: Upload Compiled Classes
         uses: actions/upload-artifact@v4
         with:
