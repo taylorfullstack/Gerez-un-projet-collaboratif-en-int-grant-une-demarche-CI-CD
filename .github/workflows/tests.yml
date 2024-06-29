@@ -38,11 +38,6 @@ jobs:
         run: mvn test
       - name: Generate JaCoCo Code Coverage Report
         run: mvn jacoco:report-aggregate
-      - name: Upload JaCoCo Code Coverage Report to GitHub
-        uses: actions/upload-artifact@v4
-        with:
-          name: JaCoCo Code Coverage Report
-          path: ./back/target/site/jacoco/
       - name: Upload Backend Build Artifacts
         uses: actions/upload-artifact@v4
         with:
@@ -66,11 +61,11 @@ jobs:
           java-version: 17
           distribution: "temurin"
           cache: "maven"
-      - name: Download JaCoCo Report from Artifacts
+      - name: Download Backend Build Artifacts
         uses: actions/download-artifact@v4
         with:
-          name: JaCoCo Code Coverage Report
-          path: ./back/target/site/jacoco/
+          name: Backend Build Artifacts
+          path: ./back/target/
       - name: Build Project
         run: mvn package -DskipTests
       - name: Analyze with SonarCloud
