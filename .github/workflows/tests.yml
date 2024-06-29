@@ -64,7 +64,7 @@ jobs:
           "https://api.github.com/repos/${{ github.repository }}/actions/artifacts/$ARTIFACT_ID/zip"
           unzip jacoco.zip -d ./back/target/site/jacoco/
       - name: Analyze with SonarCloud
-        run: mvn sonar:sonar -Pcoverage -Dsonar.coverage.jacoco.xmlReportPaths=back/target/site/jacoco/jacoco.xml
+        run: mvn sonar:sonar -Pcoverage -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN_BACKEND }}
