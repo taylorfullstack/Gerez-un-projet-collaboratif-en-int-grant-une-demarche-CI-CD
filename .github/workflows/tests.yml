@@ -71,6 +71,8 @@ jobs:
         with:
           name: JaCoCo Code Coverage Report
           path: ./back/target/site/jacoco/
+      - name: Build Project
+        run: mvn package -DskipTests
       - name: Analyze with SonarCloud
         run: mvn sonar:sonar -Pcoverage -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml
         env:
