@@ -33,7 +33,7 @@ jobs:
             ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
             ${{ runner.os }}-m2-
       - name: Install Backend Dependencies and Build Spring Boot Application
-        run: mvn clean package -DskipTests
+        run: mvn package -DskipTests
       - name: Execute Backend Tests
         run: mvn test
       - name: Generate JaCoCo Code Coverage Report
