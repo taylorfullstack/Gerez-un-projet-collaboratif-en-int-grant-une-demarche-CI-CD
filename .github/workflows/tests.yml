@@ -43,7 +43,7 @@ jobs:
       - name: Print JaCoCo Report
         run: cat ./target/site/jacoco/jacoco.xml
       - name: Analyze with SonarCloud
-        run: mvn sonar:sonar -Pcoverage -Dsonar.token=${{ secrets.SONAR_TOKEN_BACKEND }}
+        run: mvn sonar:sonar -Pcoverage -Dsonar.login=${{ secrets.SONAR_TOKEN_BACKEND }}
         env:
          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN_BACKEND }}
