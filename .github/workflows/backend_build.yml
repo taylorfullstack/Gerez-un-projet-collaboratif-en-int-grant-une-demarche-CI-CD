@@ -68,4 +68,13 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN_BACKEND }}
         run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=com.openclassrooms.bobapp -f pom.xml
-        working-directory: back
+        with:
+         projectBaseDir: back
+         args: >
+           -Dsonar.projectKey=com.openclassrooms.bobapp
+           -Dsonar.organization=taylorfullstack
+           -Dsonar.sources=./src/app
+           -Dsonar.sourceEncoding=UTF-8
+           -Dsonar.test.sources=./src/app
+           -Dsonar.coverage.jacoco.xmlReportPaths=./target/site/jacoco/jacoco.xml
+           -Dsonar.project.monorepo.enabled=true
