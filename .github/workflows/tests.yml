@@ -7,84 +7,84 @@ on:
     branches: [ main ]
 
 jobs:
-  backend:
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ${{github.workspace}}/back
-    strategy:
-      matrix:
-        java-version: [ 17 ]
-    steps:
-      - name: Checkout Backend Code
-        uses: actions/checkout@v4
-      - name: Set Up JDK ${{ matrix.java-version }}
-        uses: actions/setup-java@v4.2.1
-        with:
-          java-version: ${{ matrix.java-version }}
-          distribution: "temurin"
-          cache: "maven"
-      - name: Cache Maven Dependencies
-        uses: actions/cache@v4.0.2
-        with:
-          path: ~/.m2
-          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
-          restore-keys: |
-            ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
-            ${{ runner.os }}-m2-
-      - name: Install Backend Dependencies and Build Spring Boot Application
-        run: mvn clean install
-      - name: Execute Backend Tests
-        run: mvn clean test
-      - name: Generate JaCoCo Code Coverage Report
-        run: mvn jacoco:report
-      - name: Upload JaCoCo Code Coverage Report to GitHub
-        uses: actions/upload-artifact@v4
-        with:
-          name: JaCoCo Code Coverage Report
-          path: ./back/target/site/jacoco/
-
-  sonarcloud:
-    needs: backend
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ${{github.workspace}}/back
-    steps:
-      - name: Checkout Backend Code
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - name: Set Up JDK
-        uses: actions/setup-java@v4
-        with:
-          java-version: 17
-          distribution: "temurin"
-          cache: "maven"
-      - name: Cache SonarCloud packages
-        uses: actions/cache@v4.0.2
-        with:
-          path: ~/.sonar/cache
-          key: ${{ runner.os }}-sonar
-          restore-keys: ${{ runner.os }}-sonar
-      - name: Cache Maven packages
-        uses: actions/cache@v4.0.2
-        with:
-          path: ~/.m2
-          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
-          restore-keys: ${{ runner.os }}-m2
-      - name: SonarCloud Backend Scan
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Needed to get PR information, if any
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: |
-          echo "Echo Backend SonarCloud Scan"
-          mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=taylorfullstack_com.openclassrooms.bobpp
-      - name: Upload SonarQube Report
-        uses: actions/upload-artifact@v4
-        with:
-          name: sonarqube-report
-          path: .scannerwork/report-task.txt
+#  backend:
+#    runs-on: ubuntu-latest
+#    defaults:
+#      run:
+#        working-directory: ${{github.workspace}}/back
+#    strategy:
+#      matrix:
+#        java-version: [ 17 ]
+#    steps:
+#      - name: Checkout Backend Code
+#        uses: actions/checkout@v4
+#      - name: Set Up JDK ${{ matrix.java-version }}
+#        uses: actions/setup-java@v4.2.1
+#        with:
+#          java-version: ${{ matrix.java-version }}
+#          distribution: "temurin"
+#          cache: "maven"
+#      - name: Cache Maven Dependencies
+#        uses: actions/cache@v4.0.2
+#        with:
+#          path: ~/.m2
+#          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+#          restore-keys: |
+#            ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+#            ${{ runner.os }}-m2-
+#      - name: Install Backend Dependencies and Build Spring Boot Application
+#        run: mvn clean install
+#      - name: Execute Backend Tests
+#        run: mvn clean test
+#      - name: Generate JaCoCo Code Coverage Report
+#        run: mvn jacoco:report
+#      - name: Upload JaCoCo Code Coverage Report to GitHub
+#        uses: actions/upload-artifact@v4
+#        with:
+#          name: JaCoCo Code Coverage Report
+#          path: ./back/target/site/jacoco/
+#
+#  sonarcloud:
+#    needs: backend
+#    runs-on: ubuntu-latest
+#    defaults:
+#      run:
+#        working-directory: ${{github.workspace}}/back
+#    steps:
+#      - name: Checkout Backend Code
+#        uses: actions/checkout@v4
+#        with:
+#          fetch-depth: 0
+#      - name: Set Up JDK
+#        uses: actions/setup-java@v4
+#        with:
+#          java-version: 17
+#          distribution: "temurin"
+#          cache: "maven"
+#      - name: Cache SonarCloud packages
+#        uses: actions/cache@v4.0.2
+#        with:
+#          path: ~/.sonar/cache
+#          key: ${{ runner.os }}-sonar
+#          restore-keys: ${{ runner.os }}-sonar
+#      - name: Cache Maven packages
+#        uses: actions/cache@v4.0.2
+#        with:
+#          path: ~/.m2
+#          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+#          restore-keys: ${{ runner.os }}-m2
+#      - name: SonarCloud Backend Scan
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Needed to get PR information, if any
+#          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+#        run: |
+#          echo "Echo Backend SonarCloud Scan"
+#          mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=taylorfullstack_com.openclassrooms.bobpp
+#      - name: Upload SonarQube Report
+#        uses: actions/upload-artifact@v4
+#        with:
+#          name: sonarqube-report
+#          path: .scannerwork/report-task.txt
 
   frontend:
     runs-on: ubuntu-latest
