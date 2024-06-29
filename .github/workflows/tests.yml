@@ -38,6 +38,13 @@ jobs:
         run: mvn test
       - name: Generate JaCoCo Code Coverage Report
         run: mvn jacoco:report
+      - name: Print JaCoCo Report
+        run: cat ./target/site/jacoco/jacoco.xml
+      - name: Analyze With SonarCloud
+        run: mvn sonar:sonar -Pcoverage -Dsonar.login=${{ secrets.SONAR_TOKEN_BACKEND }}
+        env:
+         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN_BACKEND }}
       - name: Upload JaCoCo Code Coverage Report to GitHub
         uses: actions/upload-artifact@v4.3.3
         with:
