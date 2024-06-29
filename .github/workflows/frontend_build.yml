@@ -1,0 +1,50 @@
+name: Frontend Test and SonarCloud Scan
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  Frontend-test:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: front
+
+    strategy:
+      matrix:
+        node-version: [20]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Use Node.js ${{matrix.node-version}}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{matrix.node-version}}
+
+      - name: Run npm install
+        run: npm install
+
+      - name: Run npm test
+        run: npm run test -- --no-watch --no-progress --browsers=ChromeHeadless --code-coverage
+
+      - name: Coverage report
+        uses: actions/upload-artifact@v4
+        with:
+          name: karma-report
+          path: front/coverage
+
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@master
+        with:
+          projectBaseDir: front
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
