@@ -50,7 +50,7 @@ jobs:
         with:
          fetch-depth: 0
       - name: Download Compiled Classes
-        uses: actions/download-artifact@v4.3.3
+        uses: actions/download-artifact@v4.1.7
         with:
          name: Compiled Classes
          path: ./target/classes/
