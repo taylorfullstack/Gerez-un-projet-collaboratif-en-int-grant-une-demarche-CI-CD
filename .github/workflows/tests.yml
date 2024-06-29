@@ -57,12 +57,11 @@ jobs:
         with:
           name: JaCoCo Code Coverage Report
           path: ./target/site/jacoco/
-      - name: Print Current Directory and List Files
+      - name: List all artifacts
         run: |
-          echo "Current directory:"
-          pwd
-          echo "Files in target/site/jacoco:"
-          ls -l ./target/site/jacoco/
+          curl -H "Accept: application/vnd.github.v3+json" \
+               -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+               https://api.github.com/repos/${{ github.repository }}/actions/runs/${{ github.run_id }}/artifacts
       - name: Print Downloaded JaCoCo Report
         run: cat ./target/site/jacoco/jacoco.xml
       - name: Analyze with SonarCloud
