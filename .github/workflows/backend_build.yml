@@ -2,11 +2,21 @@ name: Backend Test and SonarCloud Scan
 
 on:
   push:
+    paths:
+      - 'back/**'
+      - '.github/workflows/**'
     branches:
       - main
+
   pull_request:
-    branches:
-      - main
+    paths:
+      - 'back/**'
+      - '.github/workflows/**'
+    types:
+      - opened
+      - synchronize
+      - reopened
+
 jobs:
   Backend-test:
     runs-on: ubuntu-latest
@@ -18,6 +28,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
 
       - name: Build with Maven
         run: mvn -B package --file pom.xml
