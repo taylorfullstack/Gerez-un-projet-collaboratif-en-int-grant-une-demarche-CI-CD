@@ -136,3 +136,6 @@ jobs:
             -Dsonar.sources=src
             -Dsonar.host.url=https://sonarcloud.io
             -Dsonar.javascript.lcov.reportPaths=coverage/bobapp/lcov.info
+            -Dsonar.exclusions=node_modules/**,test/**,dist/**,.vscode/**,.github/**
+            -Dsonar.language=ts
+            -Dsonar.typescript.tsconfigPaths=tsconfig.json
