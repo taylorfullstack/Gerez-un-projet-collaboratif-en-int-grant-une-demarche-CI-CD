@@ -65,7 +65,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: Backend Build Artifacts
-          path: ./back/target/
+          path: ./
       - name: Build Project
         run: mvn package -DskipTests
       - name: Analyze with SonarCloud
