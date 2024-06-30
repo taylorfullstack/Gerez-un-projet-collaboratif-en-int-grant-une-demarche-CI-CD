@@ -1,0 +1,47 @@
+name: Backend Test and SonarCloud Scan
+
+on:
+  push:
+    paths:
+      - 'back/**'
+      - '.github/workflows/**'
+    branches:
+      - main
+
+  pull_request:
+    paths:
+      - 'back/**'
+      - '.github/workflows/**'
+    types:
+      - opened
+      - synchronize
+      - reopened
+
+jobs:
+  tests:
+    name: Unit Tests
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        dir: [back]
+        include:
+          - dir: back
+            token: SONAR_TOKEN_BACKEND
+    steps:
+      - uses: actions/checkout@v4
+      - uses: bcgov-nr/action-test-and-analyse-java@main
+        with:
+          commands: |
+            ./mvnw test
+          dir: ${{ matrix.dir }}
+          java-cache: maven
+          java-distribution: temurin
+          java-version: "17"
+          sonar_args: |
+            -Dsonar.exclusions=**/coverage/**
+            -Dsonar.organization=taylorfullstack
+            -Dsonar.projectKey=com.openclassrooms.bobapp
+          sonar_token: ${{ secrets[matrix.token] }}
+          triggers: ${{ matrix.triggers }}
+          repository: taylorfullstack/Gerez-un-projet-collaboratif-en-int-grant-une-demarche-CI-CD
+          branch: main
