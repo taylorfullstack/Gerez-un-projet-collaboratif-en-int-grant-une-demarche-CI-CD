@@ -56,9 +56,6 @@ jobs:
         uses: SonarSource/sonarcloud-github-action@master
         with:
           projectBaseDir: front
-          args: >
-            -Dsonar.sources=./src/app
-            -Dsonar.test.sources=./src/app
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN_FRONTEND}}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
