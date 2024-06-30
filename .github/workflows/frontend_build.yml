@@ -59,8 +59,6 @@ jobs:
           args: >
             -Dsonar.sources=./src/app
             -Dsonar.test.sources=./src/app
-            -Dsonar.exclusions=node_modules/**,dist/**,.vscode/**,.github/**,src/environments/**,src/tests.ts,**/*.spec.ts
-            -Dsonar.project.monorepo.enabled=true
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN_FRONTEND}}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
