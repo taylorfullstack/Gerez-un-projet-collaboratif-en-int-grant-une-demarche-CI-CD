@@ -31,7 +31,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4.1.7
         with:
-          fetch-depth: 50
+          fetch-depth: 0
+          submodules: recursive  # Fetch submodules recursively
+          no-shallow-submodules: true
 
       - name: Build with Maven
         run: mvn -B package --file pom.xml
