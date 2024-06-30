@@ -12,6 +12,8 @@ on:
     paths:
       - 'back/**'
       - '.github/workflows/**'
+    branches:
+      - main
     types:
       - opened
       - synchronize
