@@ -60,10 +60,8 @@ jobs:
             -Dsonar.projectKey=taylorfullstack_Gerez-un-projet-collaboratif-en-int-grant-une-demarche-CI-CD-frontend
             -Dsonar.organization=taylorfullstack
             -Dsonar.sources=./src/app
-            -Dsonar.sourceEncoding=UTF-8
             -Dsonar.test.sources=./src/app
             -Dsonar.exclusions=node_modules/**,dist/**,.vscode/**,.github/**,src/environments/**,src/tests.ts,**/*.spec.ts
-            -Dsonar.javascript.lcov.reportPaths=./coverage/bobapp/lcov.info
             -Dsonar.project.monorepo.enabled=true
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN_FRONTEND}}
