@@ -43,7 +43,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: front-coverage-report
-          path: front/coverage/bobapp
+          path: front/coverage/bobapp/lcov.info
 
   sonarcloud_scan:
     needs: test_and_coverage
@@ -58,9 +58,9 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: front-coverage-report
-          path: front/coverage/bobapp
+          path: front/coverage/bobapp/lcov.info
       - name: List coverage directory contents
-        run: ls -l front/coverage/bobapp
+        run: ls -l front/coverage/bobapp/lcov.info
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@master
         with:
