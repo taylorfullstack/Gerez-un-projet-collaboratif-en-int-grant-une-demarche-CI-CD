@@ -39,28 +39,6 @@ jobs:
         run: npm ci
       - name: Run Tests and Generate Code Coverage Report
         run: npm run test -- --no-watch --no-progress --browsers=ChromeHeadless --code-coverage
-      - name: Upload Code Coverage Report
-        uses: actions/upload-artifact@v4
-        with:
-          name: front-coverage-report
-          path: front/coverage/bobapp/lcov.info
-
-  sonarcloud_scan:
-    needs: test_and_coverage
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: front
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Download Code Coverage Report
-        uses: actions/download-artifact@v4
-        with:
-          name: front-coverage-report
-          path: front/coverage/bobapp/lcov.info
-      - name: List coverage directory contents
-        run: ls -l front/coverage/bobapp/lcov.info
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@master
         with:
@@ -70,7 +48,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   docker_build_and_push:
-    needs: sonarcloud_scan
+    needs: test_and_coverage
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
