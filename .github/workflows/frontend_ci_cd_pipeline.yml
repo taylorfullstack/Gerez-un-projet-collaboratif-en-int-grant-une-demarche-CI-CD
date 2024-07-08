@@ -1,4 +1,4 @@
-name: Frontend CI
+name: Frontend CI/CD Pipeline
 
 on:
   push:
@@ -18,7 +18,7 @@ on:
       - reopened
 
 jobs:
-  frontend_build:
+  frontend_build_test_analyze:
     runs-on: ubuntu-latest
 
     defaults:
@@ -41,6 +41,9 @@ jobs:
       - name: Install Dependencies
         run: npm ci
 
+      - name: Build Angular Project
+        run: npm run build
+
       - name: Run Tests and Generate Code Coverage Report
         run: npm run test -- --no-watch --no-progress --browsers=ChromeHeadless --code-coverage
 
@@ -59,7 +62,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   docker_build_and_push:
-    needs: frontend_build
+    needs: frontend_build_test_analyze
     runs-on: ubuntu-latest
     steps:
       - name: Checkout

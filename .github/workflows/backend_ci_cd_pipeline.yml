@@ -1,4 +1,4 @@
-name: Backend CI
+name: Backend CI/CD Pipeline
 
 on:
   push:
@@ -20,7 +20,7 @@ on:
       - reopened
 
 jobs:
-  backend_build:
+  backend_build_test_analyze:
     runs-on: ubuntu-latest
 
     defaults:
@@ -71,7 +71,7 @@ jobs:
           mvn -B verify sonar:sonar -f pom.xml
 
   docker_build_and_push:
-    needs: backend_build
+    needs: backend_build_test_analyze
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
